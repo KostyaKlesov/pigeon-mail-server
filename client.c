@@ -32,6 +32,5 @@ int main(void)
        perror("sendto()");
        exit(2);
    }
-
    close(s);
 }
