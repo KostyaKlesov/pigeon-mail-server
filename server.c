@@ -3,6 +3,8 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+//#include <assert.h>
+
 
 int main(){
     
@@ -10,6 +12,7 @@ int main(){
     struct sockaddr_in client, server;
     char buf[32];
     s = socket(AF_INET, SOCK_DGRAM, 0);
+    char message[5];
 
 
     if (s< 0){
@@ -35,7 +38,7 @@ int main(){
        exit(3);
     }
 
-    printf("Port assigned is %d\n", ntohs(server.sin_port));
+    printf("Используется порт %d\n", ntohs(server.sin_port));
 
     client_address_size = sizeof(client);
 
@@ -46,12 +49,6 @@ int main(){
        exit(4);
     }
 
-    printf("Received message %s from domain %s port %d internet\
-        address %s\n",
-       buf,
-       (client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),
-       ntohs(client.sin_port),
-       inet_ntoa(client.sin_addr));
-
+    printf("Получено сообщение %s\n",buf,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
     close(s);
 }

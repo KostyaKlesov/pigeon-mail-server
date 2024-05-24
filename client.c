@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 
+
 int main(void)
 {
    
@@ -12,6 +13,9 @@ int main(void)
     unsigned short port;
     struct sockaddr_in server;
     char buf[32];
+    char message[5];
+
+    memset(buf, '\0', sizeof(buf));
 
    if ((s = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
    {
@@ -23,14 +27,18 @@ int main(void)
     server.sin_port = ntohs(3590);
     server.sin_addr.s_addr = inet_addr("127.0.0.1");
 
+    for (int i = 0; i < sizeof(message); i++){
+        printf("Введите сообщение: \n");
+        scanf("%s", &message[i]);
+    }
+    
+    strcpy(buf, &message);
 
-   strcpy(buf, "Hello");
-
-   if (sendto(s, buf, (strlen(buf)+1), 0,
+    if (sendto(s, buf, (strlen(buf)+1), 0,
                  (struct sockaddr *)&server, sizeof(server)) < 0)
-   {
-       perror("sendto()");
-       exit(2);
-   }
-   close(s);
+    {
+        perror("sendto()");
+        exit(2);
+    }
+    close(s);
 }
