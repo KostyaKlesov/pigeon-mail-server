@@ -12,30 +12,24 @@ int main(void)
     int s;
     unsigned short port;
     struct sockaddr_in server;
-    char buf[32];
+    char buf[5];
     char message[5];
-
-    memset(buf, '\0', sizeof(buf));
-
-   if ((s = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
-   {
-       perror("socket()");
-       exit(1);
-   }
-
+    ///memset(buf, '\0', sizeof(buf));
+    if ((s = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
+    {
+        perror("socket()");
+        exit(1);
+    }
     server.sin_family = AF_INET;
     server.sin_port = ntohs(3590);
     server.sin_addr.s_addr = inet_addr("127.0.0.1");
-
-    for (int i = 0; i < sizeof(message); i++){
-        printf("Введите сообщение: \n");
+    for (size_t i = 0; i < sizeof(message); i++)
+    {
         scanf("%s", &message[i]);
     }
-    
-    strcpy(buf, &message);
-
-    if (sendto(s, buf, (strlen(buf)+1), 0,
-                 (struct sockaddr *)&server, sizeof(server)) < 0)
+    strcpy(buf, message);
+    printf("Введенное сообщение: %s\n", &buf);
+    if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
     {
         perror("sendto()");
         exit(2);

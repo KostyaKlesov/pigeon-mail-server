@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 //#include <assert.h>
 
-
+//РАЗБЕРИСЬ С ПОСИМВОЛЬНОЙ ПЕРЕДАЧЕЙ 
 int main(){
     
     int s, namelen, client_address_size;
