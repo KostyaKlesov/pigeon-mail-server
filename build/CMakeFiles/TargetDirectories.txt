@@ -1,0 +1,4 @@
+/home/kostya/Рабочий стол/Server/build/CMakeFiles/rebuild_cache.dir
+/home/kostya/Рабочий стол/Server/build/CMakeFiles/edit_cache.dir
+/home/kostya/Рабочий стол/Server/build/CMakeFiles/client.dir
+/home/kostya/Рабочий стол/Server/build/CMakeFiles/server.dir
