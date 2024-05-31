@@ -3,9 +3,8 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-//#include <assert.h>
 
-//РАЗБЕРИСЬ С ПОСИМВОЛЬНОЙ ПЕРЕДАЧЕЙ 
+
 int main(){
     
     int s, namelen, client_address_size;
