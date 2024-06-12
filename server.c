@@ -3,6 +3,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include "base.h"
 
 
 int main(){
@@ -47,7 +48,13 @@ int main(){
        perror("recvfrom()");
        exit(4);
     }
-
-    printf("Получено сообщение %s\n",buf,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
+    // почитать про структуры и посмотреть файл packetizer_linux.cpp (create_packet, recv)
+    // и про пакеты
+    struct packet *recvpacket = (struct packet*)(buf);
+    char sms [4];
+    memcpy(sms, recvpacket->msg, 4);
+    printf("%s\n", buf);
+    //printf("%s", recvpacket->msg);
+    printf("Получено сообщение номер %u %s\n", recvpacket->num,sms,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
     close(s);
 }
