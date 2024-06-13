@@ -52,9 +52,22 @@ int main(){
     // и про пакеты
     struct packet *recvpacket = (struct packet*)(buf);
     char sms [4];
-    memcpy(sms, recvpacket->msg, 4);
-    printf("%s\n", buf);
+    //printf("%s\n", buf);
     //printf("%s", recvpacket->msg);
-    printf("Получено сообщение номер %u %s\n", recvpacket->num,sms,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
+    for(size_t i = 0; i <= 6; i++){
+        if (strlen(recvpacket->msg) - strlen(recvpacket->msg + i) <= 4){
+            recvpacket->num = i + 1;
+            memcpy(sms, recvpacket->msg + i, 4);
+            //recvpacket->msg[4] = '\0';
+            printf("Получено сообщение номер %u %s\n", recvpacket->num,sms,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
+        }
+        else{
+            recvpacket->num = i + 1;
+            memcpy(sms, recvpacket->msg + i, strlen(recvpacket->msg + i));
+            //recvpacket->msg[4] = '\0';
+            printf("Получено сообщение номер %u %s\n", recvpacket->num,sms,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
+
+        }
+    }
     close(s);
 }

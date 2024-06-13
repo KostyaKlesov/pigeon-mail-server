@@ -13,7 +13,7 @@ int main(void)
     size_t size = 0;
     int s;
     uint8_t buf[5];
-    int size_of_code = sizeof(code);
+    //int size_of_code = sizeof(code);
     unsigned short port;
     struct sockaddr_in server;
     if ((s = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
@@ -27,13 +27,29 @@ int main(void)
     //memset(code, 0, 6);
     size_t n = getline(&code, &size, stdin);
     struct packet * outpacket = (struct packet *)(buf);
-    outpacket->num = 1;
-    memcpy(outpacket->msg, code, 4);
-    printf("%s", outpacket->msg);
-    if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
-    {
-        perror("sendto()");
-        exit(2);
+    //printf("%s\n", code);
+    for (size_t i = 0; i < strlen(code); i++){
+        if (strlen(code) - strlen(code + i) <= 4){
+            outpacket->num = i + 1;
+            memcpy(outpacket->msg, code + i, 4);
+            outpacket->msg[4] = '\0';
+            if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
+            {
+                perror("sendto()");
+                exit(2);
+            }
+            memset(outpacket->msg, 0, strlen(outpacket->msg));
+        }
+        else{
+            memcpy(outpacket->msg, code + i, strlen(code+i));
+            outpacket->msg[strlen(code + i)] = '\0';
+            if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
+            {
+                perror("sendto()");
+                exit(2);
+            }
+        }
     }
+    //printf("%s", outpacket->msg);
     close(s);
 }
