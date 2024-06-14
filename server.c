@@ -12,7 +12,7 @@ int main(){
     struct sockaddr_in client, server;
     char buf[32];
     s = socket(AF_INET, SOCK_DGRAM, 0);
-    char message[5];
+    //char message[5];
 
 
     if (s< 0){
@@ -42,28 +42,22 @@ int main(){
 
     client_address_size = sizeof(client);
 
-    if(recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *) &client,
-            &client_address_size) <0)
+    if(recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *) &client,&client_address_size) <0)
     {
        perror("recvfrom()");
        exit(4);
     }
-    // почитать про структуры и посмотреть файл packetizer_linux.cpp (create_packet, recv)
-    // и про пакеты
     struct packet *recvpacket = (struct packet*)(buf);
     char sms [4];
-    //printf("%s\n", buf);
-    //printf("%s", recvpacket->msg);
     for(size_t i = 0; i <= 6; i++){
         if (strlen(recvpacket->msg) - strlen(recvpacket->msg + i) <= 4){
             recvpacket->num = i + 1;
-            memcpy(sms, recvpacket->msg + i, 4);
-            //recvpacket->msg[4] = '\0';
-            printf("Получено сообщение номер %u %s\n", recvpacket->num,sms,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
+            //memcpy(sms, recvpacket->msg + i, strlen(recvpacket->msg));
+            printf("Получено сообщение номер %u %s\n", recvpacket->num,recvpacket->msg + i,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
         }
         else{
             recvpacket->num = i + 1;
-            memcpy(sms, recvpacket->msg + i, strlen(recvpacket->msg + i));
+            memcpy(sms, recvpacket->msg + i, strlen(sms + i));
             //recvpacket->msg[4] = '\0';
             printf("Получено сообщение номер %u %s\n", recvpacket->num,sms,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
 

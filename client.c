@@ -24,25 +24,28 @@ int main(void)
     server.sin_family = AF_INET;
     server.sin_port = ntohs(3590);
     server.sin_addr.s_addr = inet_addr("127.0.0.1");
-    //memset(code, 0, 6);
     size_t n = getline(&code, &size, stdin);
+    if (n == -1) {
+        perror("getline");
+        exit(1);
+    }
     struct packet * outpacket = (struct packet *)(buf);
-    //printf("%s\n", code);
-    for (size_t i = 0; i < strlen(code); i++){
+    for (size_t i = 0; i < strlen(code) - 1; i++){
         if (strlen(code) - strlen(code + i) <= 4){
             outpacket->num = i + 1;
             memcpy(outpacket->msg, code + i, 4);
             outpacket->msg[4] = '\0';
+            printf("\nСообщение под номером %i -: %s", outpacket->num, outpacket->msg);
             if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
             {
                 perror("sendto()");
                 exit(2);
             }
-            memset(outpacket->msg, 0, strlen(outpacket->msg));
         }
         else{
             memcpy(outpacket->msg, code + i, strlen(code+i));
             outpacket->msg[strlen(code + i)] = '\0';
+            printf("\nСообщение под номером %i -: %s", outpacket->num, outpacket->msg);
             if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
             {
                 perror("sendto()");
@@ -50,6 +53,5 @@ int main(void)
             }
         }
     }
-    //printf("%s", outpacket->msg);
     close(s);
 }
