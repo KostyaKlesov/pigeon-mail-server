@@ -35,7 +35,7 @@ int main(void)
             outpacket->num = i + 1;
             memcpy(outpacket->msg, code + i, 4);
             outpacket->msg[4] = '\0';
-            printf("\nСообщение под номером %i -: %s", outpacket->num, outpacket->msg);
+            printf("\nСообщение под номером для отпраки: %i -: %s", outpacket->num, outpacket->msg);
             if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
             {
                 perror("sendto()");
@@ -45,7 +45,7 @@ int main(void)
         else{
             memcpy(outpacket->msg, code + i, strlen(code+i));
             outpacket->msg[strlen(code + i)] = '\0';
-            printf("\nСообщение под номером %i -: %s", outpacket->num, outpacket->msg);
+            printf("\nСообщение для отправки под номером: %i -: %s", outpacket->num, outpacket->msg);
             if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
             {
                 perror("sendto()");

@@ -12,7 +12,6 @@ int main(){
     struct sockaddr_in client, server;
     char buf[32];
     s = socket(AF_INET, SOCK_DGRAM, 0);
-    //char message[5];
 
 
     if (s< 0){
@@ -41,26 +40,20 @@ int main(){
     printf("Используется порт %d\n", ntohs(server.sin_port));
 
     client_address_size = sizeof(client);
-
-    if(recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *) &client,&client_address_size) <0)
-    {
-       perror("recvfrom()");
-       exit(4);
-    }
     struct packet *recvpacket = (struct packet*)(buf);
-    char sms [4];
-    for(size_t i = 0; i <= 6; i++){
-        if (strlen(recvpacket->msg) - strlen(recvpacket->msg + i) <= 4){
-            recvpacket->num = i + 1;
-            //memcpy(sms, recvpacket->msg + i, strlen(recvpacket->msg));
-            printf("Получено сообщение номер %u %s\n", recvpacket->num,recvpacket->msg + i,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
-        }
-        else{
-            recvpacket->num = i + 1;
-            memcpy(sms, recvpacket->msg + i, strlen(sms + i));
-            //recvpacket->msg[4] = '\0';
-            printf("Получено сообщение номер %u %s\n", recvpacket->num,sms,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
+    char * code;
 
+    for(size_t i = 0; i < 6; i++){
+        if(recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *) &client,&client_address_size) <0)
+        {
+            perror("recvfrom()");
+            exit(4);
+        }
+        if ((strlen(code) - strlen(code + i) <= 4))
+        {
+            recvpacket->num = i + 1;
+            strncpy(recvpacket->msg, buf + 1, 4);  
+            printf("Получено сообщение номер %u %s\n", recvpacket->num,recvpacket->msg,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
         }
     }
     close(s);
