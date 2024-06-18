@@ -42,6 +42,11 @@ int main(){
     client_address_size = sizeof(client);
     struct packet *recvpacket = (struct packet*)(buf);
     char * code;
+    unsigned char data_byte = 0;
+    int start_index = 0;
+    int end_index = 4; // Отправляем первые пять символов в цикле
+    data_byte |= (start_index << 4); // Сохраняем индекс первого символа в старшие 4 бита
+    data_byte |= end_index; // Сохраняем индекс последнего символа в младшие 4 бита
 
     for(size_t i = 0; i < 6; i++){
         if(recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *) &client,&client_address_size) <0)
@@ -49,12 +54,9 @@ int main(){
             perror("recvfrom()");
             exit(4);
         }
-        if ((strlen(code) - strlen(code + i) <= 4))
-        {
             recvpacket->num = i + 1;
             strncpy(recvpacket->msg, buf + 1, 4);  
             printf("Получено сообщение номер %u %s\n", recvpacket->num,recvpacket->msg,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
-        }
     }
     close(s);
 }
