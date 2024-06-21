@@ -5,12 +5,16 @@
 #include <arpa/inet.h>
 #include "base.h"
 
+void unpackTwoValues(uint8_t packedValue, int *firstValue, int *secondValue) {
+    *firstValue = (packedValue >> 4) & 0xF;
+    *secondValue = packedValue & 0xF;
+}
 
 int main(){
     
     int s, namelen, client_address_size;
     struct sockaddr_in client, server;
-    char buf[32];
+    char buf[PACKET_SIZE];
     s = socket(AF_INET, SOCK_DGRAM, 0);
 
 
@@ -38,25 +42,44 @@ int main(){
     }
 
     printf("Используется порт %d\n", ntohs(server.sin_port));
-
     client_address_size = sizeof(client);
-    struct packet *recvpacket = (struct packet*)(buf);
-    char * code;
-    unsigned char data_byte = 0;
-    int start_index = 0;
-    int end_index = 4; // Отправляем первые пять символов в цикле
-    data_byte |= (start_index << 4); // Сохраняем индекс первого символа в старшие 4 бита
-    data_byte |= end_index; // Сохраняем индекс последнего символа в младшие 4 бита
-
+    char * code; 
+    int start_index;
+    int end_index;
+    char msg_buff[4];
+    msg_buff[3] = 0;
+    int temp_index = 2;
+    char message[6];
     for(size_t i = 0; i < 6; i++){
-        if(recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *) &client,&client_address_size) <0)
+        if(recvfrom(s, buf, PACKET_SIZE, 0, (struct sockaddr *) &client,&client_address_size) <0)
         {
             perror("recvfrom()");
             exit(4);
         }
-            recvpacket->num = i + 1;
-            strncpy(recvpacket->msg, buf + 1, 4);  
-            printf("Получено сообщение номер %u %s\n", recvpacket->num,recvpacket->msg,(client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
+        struct packet *recvpacket = (struct packet*)(buf);
+        unpackTwoValues(recvpacket->data_byte, &start_index, &end_index);
+        memset(msg_buff, 0, MESSAGE_SIZE + 1);
+        memcpy(msg_buff, recvpacket->msg, MESSAGE_SIZE);
+        printf("Получено сообщение номер %u %s, start=%u, end=%u\n", recvpacket->num + 1, msg_buff, start_index, end_index, (client.sin_family == AF_INET?"AF_INET":"UNKNOWN"),ntohs(client.sin_port),inet_ntoa(client.sin_addr));
+        /*if (i == 0)
+        {
+            for (int j = 0; j < 3; j++){
+                message[j] += msg_buff[j];
+            }
+        }*/
+        //else{
+        for (size_t j = strlen(message); j < 6; j++)
+        {
+            //printf("Зашли сюда\n");
+            //printf("%d\n", j);
+            message[j] = msg_buff[j - start_index];
+        }
+        
+            
+        //}
+        //memset(buf, 0, PACKET_SIZE);
     }
+    message[6] = '\0';
+    printf("Получено сообщение :%s\n", message);
     close(s);
 }

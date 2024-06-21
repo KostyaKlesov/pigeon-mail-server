@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include "base.h"
 
+uint8_t packTwoValues(int firstValue, int secondValue) {
+    return ((firstValue & 0xF) << 4) | (secondValue & 0xF);
+}
 
 int main(void)
 {
@@ -29,28 +32,29 @@ int main(void)
         perror("getline");
         exit(1);
     }
+    int start_index = 0;
+    int end_index = 2;
     struct packet * outpacket = (struct packet *)(buf);
     for (size_t i = 0; i < strlen(code) - 1; i++){
-        if (strlen(code) - strlen(code + i) <= 4){
-            outpacket->num = i + 1;
-            memcpy(outpacket->msg, code + i, 4);
-            outpacket->msg[4] = '\0';
-            printf("\nСообщение под номером для отпраки: %i -: %s", outpacket->num, outpacket->msg);
-            if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
-            {
-                perror("sendto()");
-                exit(2);
-            }
+        outpacket->num = i;
+        //outpacket->data_byte |= (start_index << 4);
+        //outpacket->data_byte |= end_index; 
+        outpacket->data_byte = packTwoValues(start_index, end_index);
+        memcpy(outpacket->msg, code + i, MESSAGE_SIZE);
+        //printf("%u\n", outpacket->data_byte);
+        //printf("Сообщение под номером для отпраки: %i -: %s %d %d\n", outpacket->num, outpacket->msg, start_index, end_index);
+        if (sendto(s, buf, PACKET_SIZE, 0,(struct sockaddr *)&server, sizeof(server)) < 0)
+        {
+            perror("sendto()");
+            exit(2);
+        }
+        if (i <= 2)
+        {
+            start_index += 1;
+            end_index += 1;
         }
         else{
-            memcpy(outpacket->msg, code + i, strlen(code+i));
-            outpacket->msg[strlen(code + i)] = '\0';
-            printf("\nСообщение для отправки под номером: %i -: %s", outpacket->num, outpacket->msg);
-            if (sendto(s, buf, (strlen(buf)+1), 0,(struct sockaddr *)&server, sizeof(server)) < 0)
-            {
-                perror("sendto()");
-                exit(2);
-            }
+            start_index += 1;
         }
     }
     close(s);
