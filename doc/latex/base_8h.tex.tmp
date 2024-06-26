@@ -1,0 +1,45 @@
+\hypertarget{base_8h}{}\doxysection{/home/kostya/Рабочий стол/\+Server/base.h File Reference}
+\label{base_8h}\index{/home/kostya/Рабочий стол/Server/base.h@{/home/kostya/Рабочий стол/Server/base.h}}
+
+
+Заголовочный файл, содержащий структуру пакета и связанные константы  
+
+
+{\ttfamily \#include $<$inttypes.\+h$>$}\newline
+Include dependency graph for base.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structpacket}{packet}}
+\begin{DoxyCompactList}\small\item\em Структура для представления пакета \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{base_8h_aebdc7d8ca8e25ed8efc90bb88ef7ef5b}{P\+A\+C\+K\+E\+T\+\_\+\+S\+I\+ZE}}~5
+\item 
+\#define \mbox{\hyperlink{base_8h_aeca90e1c1c62b70670514ffc18c9dfd4}{M\+E\+S\+S\+A\+G\+E\+\_\+\+S\+I\+ZE}}~3
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Заголовочный файл, содержащий структуру пакета и связанные константы 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{base_8h_aeca90e1c1c62b70670514ffc18c9dfd4}\label{base_8h_aeca90e1c1c62b70670514ffc18c9dfd4}} 
+\index{base.h@{base.h}!MESSAGE\_SIZE@{MESSAGE\_SIZE}}
+\index{MESSAGE\_SIZE@{MESSAGE\_SIZE}!base.h@{base.h}}
+\doxysubsubsection{\texorpdfstring{MESSAGE\_SIZE}{MESSAGE\_SIZE}}
+{\footnotesize\ttfamily \#define M\+E\+S\+S\+A\+G\+E\+\_\+\+S\+I\+ZE~3}
+
+Длина массива, в котором при передаче записываются символы кода ячейки \mbox{\Hypertarget{base_8h_aebdc7d8ca8e25ed8efc90bb88ef7ef5b}\label{base_8h_aebdc7d8ca8e25ed8efc90bb88ef7ef5b}} 
+\index{base.h@{base.h}!PACKET\_SIZE@{PACKET\_SIZE}}
+\index{PACKET\_SIZE@{PACKET\_SIZE}!base.h@{base.h}}
+\doxysubsubsection{\texorpdfstring{PACKET\_SIZE}{PACKET\_SIZE}}
+{\footnotesize\ttfamily \#define P\+A\+C\+K\+E\+T\+\_\+\+S\+I\+ZE~5}
+
+Размер пакета, передаваемого за одно сообщение 

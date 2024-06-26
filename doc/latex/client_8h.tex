@@ -1,0 +1,50 @@
+\hypertarget{client_8h}{}\doxysection{/home/kostya/Рабочий стол/\+Server/client.h File Reference}
+\label{client_8h}\index{/home/kostya/Рабочий стол/Server/client.h@{/home/kostya/Рабочий стол/Server/client.h}}
+
+
+Содержит основной код клиента для обработки пакетов данных  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include $<$inttypes.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}base.\+h\char`\"{}}\newline
+Include dependency graph for client.\+h\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{client_8h_a8310bf127ae672b71a00657d349e76ae}{pack\+Two\+Values}} (int first\+Value, int second\+Value)
+\begin{DoxyCompactList}\small\item\em Упаковывает значения первого и последнего индекса сообщения в восьмибитное число \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Содержит основной код клиента для обработки пакетов данных 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{client_8h_a8310bf127ae672b71a00657d349e76ae}\label{client_8h_a8310bf127ae672b71a00657d349e76ae}} 
+\index{client.h@{client.h}!packTwoValues@{packTwoValues}}
+\index{packTwoValues@{packTwoValues}!client.h@{client.h}}
+\doxysubsubsection{\texorpdfstring{packTwoValues()}{packTwoValues()}}
+{\footnotesize\ttfamily uint8\+\_\+t pack\+Two\+Values (\begin{DoxyParamCaption}\item[{int}]{first\+Value,  }\item[{int}]{second\+Value }\end{DoxyParamCaption})}
+
+
+
+Упаковывает значения первого и последнего индекса сообщения в восьмибитное число 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Value} & Указатель на переменную для хранения первого значения \\
+\hline
+{\em second\+Value} & Указатель на переменную для хранения второго значения \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Упакованный байт 
+\end{DoxyReturn}

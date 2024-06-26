@@ -1,0 +1,11 @@
+digraph "/home/kostya/Рабочий стол/Server/base.h"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="/home/kostya/Рабочий\l стол/Server/base.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Заголовочный файл, содержащий структуру пакета и связанные константы"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="/home/kostya/Рабочий\l стол/Server/client.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$client_8h.html",tooltip="Содержит основной код клиента для обработки пакетов данных"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="/home/kostya/Рабочий\l стол/Server/server.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$server_8h.html",tooltip="Содержит основной код сервера для обработки пакетов данных"];
+}
